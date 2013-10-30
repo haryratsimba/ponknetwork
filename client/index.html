@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Pong</title>
+	<link href='http://fonts.googleapis.com/css?family=VT323' rel='stylesheet' type='text/css'>
+	<link href="/client/bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="/client/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+	<style>
+		body {
+			padding-top: 60px;
+			padding-bottom: 40px;
+		}
+		.sidebar-nav {
+			padding: 9px 0;
+		}
+		.customFont, .navbar .brand{
+			font-family: 'VT323', cursive;
+		}
+		#rooms li{
+			list-style-type: none;
+			margin-left: 1em;
+			font-size: 1em;
+		}
+		.navbar .brand{
+			font-size:28px;
+		}
+		.nav-list .nav-header{
+			font-size: 1em;
+		}
+		#conversation{
+			overflow-y:auto;
+			height:108px;
+			width:764px;
+			border:1px solid #C8C8C8;
+			padding:0.5em;
+		}
+		footer{
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="http://nodejs-ponknetwork.rhcloud.com/">#PONG NETWORK</a>
+          <div class="nav-collapse collapse">
+            <!-- <p class="navbar-text pull-right">
+              Github <a href="#" class="navbar-link">Username</a>
+            </p> -->
+            <ul class="nav">
+              <!-- <li class="active"><a href="#">Home</a></li> -->
+              <li><a href="#about">About</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+	<div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span2">
+          <div class="well sidebar-nav" style="overflow-y:auto;height:464px;">
+            <ul class="nav nav-list">
+				<p class="nav-header">ROOMS</p>
+				<ul id="rooms"></ul>
+            </ul>
+          </div><!--/.well -->
+        </div><!--/span-->
+        <div class="span10">
+          <div class="row-fluid">
+			<canvas id="canvas" width=580 height=480></canvas>
+			<div style="margin: 0.7em 0">
+				<input type="button" id="clearChat" class="btn btn-success" value="Clear chat" />
+				<input type="button" id="replaceBall" class="btn btn-warning" value="Reposition the ball" />
+				<div class="btn-group">
+				  <button class="btn btn-info disabled">Keys </button>
+				  <button class="btn btn-info disabled"><i class="icon-arrow-up icon-white"></i> : S</button>
+				  <button class="btn btn-info disabled"><i class="icon-arrow-down icon-white"></i> : X</button>
+				</div>
+			</div>
+          </div><!--/row-->
+          <div class="row-fluid">
+			<div id="conversation"></div>
+			<div id="conversation_input" style="margin-top:7px;">
+				<input id="data" text="text" style="width:30em;"/>
+				<input type="button" id="datasend" class="btn btn-primary" value="send" />
+			</div>
+			</div><!--/row-->
+        </div><!--/span-->
+      </div><!--/row-->
+      <hr>
+      <footer>
+        <p>&copy; #Pong Network, Hary</p>
+      </footer>
+    </div><!--/.fluid-container-->
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="/common/player.js"></script>
+	<script src="/common/ball.js"></script>
+	<script src="/common/game.js"></script>
+	<script src="/common/requestAnimationFrame.js"></script>
+	<script src="/common/keys.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="/client/mustache/mustache.js"></script>
+	<script src="/client/bootstrap/js/bootstrap.min.js"></script>
+	<script>
+	$(function(){
+		$('#datasend').click( function() {
+			var message = $('#data').val();
+			$('#data').val('');
+			// tell server to execute 'sendchat' and send along one parameter
+			socket.emit('sendchat', message);
+		});
+		$('#replaceBall').click(function(){
+			socket.emit('repositionball'); //in case of lost ball
+		});
+		$('#clearChat').click(function(){
+			$('#conversation').empty();
+		});
+		// when the client hits ENTER on his keyboard
+		$('#data').keypress(function(e) {
+			if(e.which == 13) {
+				$(this).blur();
+				$('#datasend').focus().click();
+			}
+		});
+		setTimeout(function() {
+			init();
+			animate();
+		}, 500); //wait for font download
+	});
+</script>
+<!-- workaround to load font an use it on canvas :
+ http://www.risevision.com/blog/developer-tips-tricks-using-custom-fonts-with-html5-canvas/#.UmJHLPnxoU8-->
+<div class="customFont" style="visibility: hidden; height: 0"></div>
+<script id="model_room" type="text/html">
+	{{#rooms_obj}}
+		<div>
+			<a href="#" onclick="switchRoom('{{room_name}}', WIDTH)">
+				{{room_name}}
+			</a>
+				{{#players}}
+					<li>{{.}} <i class="icon-user"></i></li>
+				{{/players}}
+		</div>
+	{{/rooms_obj}}
+</script>
+</body>
+</html>

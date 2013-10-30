@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Pong</title>
+	<link href='http://fonts.googleapis.com/css?family=VT323' rel='stylesheet' type='text/css'>
+	<style>
+		body{
+			width: 100%;
+		}
+		.customFont{
+			font-family: 'VT323', cursive;
+		}
+		#rooms li{
+			list-style-type: none;
+			margin-left: 1em;
+		}
+	</style>
+</head>
+<body>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="/common/player.js"></script>
+	<script src="/common/ball.js"></script>
+	<script src="/common/game.js"></script>
+	<script src="/common/requestAnimationFrame.js"></script>
+	<script src="/common/keys.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+	<script src="/client/mustache.js"></script>
+	<script>
+	$(function(){
+		$('#datasend').click( function() {
+			var message = $('#data').val();
+			$('#data').val('');
+			// tell server to execute 'sendchat' and send along one parameter
+			socket.emit('sendchat', message);
+		});
+
+		// when the client hits ENTER on their keyboard
+		$('#data').keypress(function(e) {
+			if(e.which == 13) {
+				$(this).blur();
+				$('#datasend').focus().click();
+			}
+		});
+		setTimeout(function() {
+			init();
+			animate();
+		}, 500); //wait for font download
+	});
+</script>
+<div style="float:left;width:100px;height:800px;">
+	<b>ROOMS</b>
+	<div id="rooms" style="border-right:1px solid black;height:280px;padding:10px;overflow-y:auto"></div>
+</div>
+<!-- workaround to load font an use it on canvas :
+ http://www.risevision.com/blog/developer-tips-tricks-using-custom-fonts-with-html5-canvas/#.UmJHLPnxoU8-->
+<div class="customFont" style="visibility: hidden; height: 0"></div>
+<!-- TODO : DISPLAY SCORE USING MUSTACHE.JS -->
+<canvas id="canvas" width=880 height=480 style="float:left;margin: 0 1em"></canvas>
+<div style="float:left;width:300px;height:280px;overflow-y:auto;padding:10px;">
+	<div id="conversation"></div>
+	<input id="data" style="width:200px;" />
+	<input type="button" id="datasend" value="send" />
+</div>
+
+<script id="model_room" type="text/html">
+	{{#rooms_obj}}
+		<div>
+		<a href="#" onclick="switchRoom('{{room_name}}', WIDTH)">
+			{{room_name}}
+		</a>
+				{{#players}}
+					<li>{{.}}</li>
+				{{/players}}
+		</div>
+	{{/rooms_obj}}
+</script>
+</body>
+</html>
