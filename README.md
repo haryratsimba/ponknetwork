@@ -11,9 +11,9 @@ To install
     
 To run server
 
-    node app.js
+    node server.js
 
-Don't forget to change listenning port, domain etc...
+Don't forget to change listening port, domain etc...
 
 Technologies used
 -----------------
@@ -24,4 +24,4 @@ Technologies used
 Status
 ------
 
-It works but still under development...
+> Still under development...
