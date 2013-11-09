@@ -5,8 +5,8 @@
 		this.width = 10;
 		this.height = 10;
 		this.color = '#ffffff';
-		this.vx = 3;
-		this.vy = 3;
+		this.vx = 6.5;
+		this.vy = 6.5;
 		this.isVisible = true;
 	};
 	Ball.prototype.draw = function(ctx){
@@ -25,11 +25,13 @@
 		return this;
 	};
 	//if ball overlap paddle, modify vx and return true
-	Ball.prototype.update = function(limit){
+	Ball.prototype.update = function(limit, medium){
 		var cond = rectsOverlap(this.x, this.y, this.width, this.height, 
 			limit.x, limit.y, limit.width, limit.height);
-		this.vx = (cond) ? -this.vx : this.vx;
-		return cond;	
+		// this.vx = (cond) ? -this.vx : this.vx;
+		var left = this.x < medium; //determine the direction of the ball
+		if(cond) this.vx = (left) ? Math.abs(this.vx) : -Math.abs(this.vx);
+		return cond;
 	}
 	//code from : http://stackoverflow.com/questions/8017541/javascript-canvas-collision-detection
 	var rectsOverlap = function(x0, y0, w0, h0, x2, y2, w2, h2) {

@@ -53,7 +53,7 @@ function update(){
 	if(ball.y <= 0 || ball.y+ball.height >= HEIGHT){
 		ball.vy = -ball.vy;
 	}
-	var isOverlapping = ball.update(current) || ball.update(opponent);
+	var isOverlapping = ball.update(current, WIDTH/2) || ball.update(opponent, WIDTH/2);
 	if(isOverlapping){
 		ball.isVisible = false;
 		socket.emit("ballrebond", {x: ball.x, y: ball.y, vx: ball.vx, vy: ball.vy});

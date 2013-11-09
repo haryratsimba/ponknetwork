@@ -7,7 +7,7 @@
 		this.username = '';
 		this.score = 0;
 		this.color = '#ffffff';
-		this.speed = 6;
+		this.speed = 4.5;
 	};
 	Player.prototype.draw = function(ctx){
 		ctx.save();

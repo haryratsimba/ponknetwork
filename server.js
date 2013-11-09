@@ -136,8 +136,8 @@ io.sockets.on('connection', function (socket) {
 	
 	function generateBallPos(){
 		var random = Math.floor(Math.random()*(7)+1); //generate nb between 7 and 1
-		var ball_vx = (random % 2 == 0) ? 5 : -5;
-		var ball_vy = (random % 2 == 0) ? -5 : 5;
+		var ball_vx = (random % 2 == 0) ? 6.5 : -6.5;
+		var ball_vy = (random % 2 == 0) ? -6.5 : 6.5;
 		return {vx: ball_vx, vy: ball_vy};
 	}
 	
