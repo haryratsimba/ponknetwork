@@ -1,27 +1,21 @@
 ponknetwork
 ===========
 
-Pong like in real-time, using nodejs with Socket.io. It also include a chat.
-It provides a room system, each player can switch to available room (if there are less than two players).
+Pong like, temps réel utilisant nodejs et Socket.io.
 
-To install
+Installation
 
     npm install socket.io
     nmp install express
     
-To run server
+Pour lancer le serveur
 
     node server.js
 
-Don't forget to change listening port, domain etc...
+N'oubliez pas de changer le port, le domain...
 
-Technologies used
+Technologies utiliées
 -----------------
 
 * Node.js (http://nodejs.org)
 * Canvas, Javascript, HTML, CSS
-
-Status
-------
-
-> Still under development...
