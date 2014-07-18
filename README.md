@@ -1,7 +1,7 @@
 ponknetwork
 ===========
 
-Pong like, temps réel utilisant nodejs et Socket.io.
+Pong 2 joueurs utilisant nodejs et Socket.io.
 
 Installation
 
